@@ -40,3 +40,30 @@ accelerate launch --config_file="../configs/accelerate_config.yaml" main.py
 conda env create -n YOUR_ENV_NAME -f my_env.yaml
 ```
 
+> 5. Debug：`.vscode/launch.json`
+
+```json
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: accelerate launch",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "accelerate.commands.launch",
+            "args": [
+                "--config_file", "/data/home/wupengpeng/code/temp/Pytorch_Train_Demo/configs/accelerate_config.yaml",
+                "/data/home/wupengpeng/code/temp/Pytorch_Train_Demo/scripts/main.py",
+                "--config", "/data/home/wupengpeng/code/temp/Pytorch_Train_Demo/configs/config.toml",
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": false
+        }
+    ]
+}
+```
+
+🎉 待补充的功能：动态保存验证集上准确率最高的模型参数（如果是peft_model，则保存adaptor，否则保存整个模型的参数~）
