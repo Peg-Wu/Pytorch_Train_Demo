@@ -1,6 +1,6 @@
 # Pytorch_Train_Demo
 
-> 1. 基本功能：
+## 1. 基本功能
 
 - 利用accelerate进行分布式训练，混合精度训练等  
   - `accelerate config`
@@ -10,37 +10,49 @@
   - `accelerate.skip_first_batches()`
 
 - 利用`torch.utils.tensorboard`实现训练可视化
-  - 可视化包含loss，accuracy，以及训练过程中模型的参数和梯度分布
-  - `accelerate.log()`无法添加histogram图，有局限性
+  - 可视化包含loss，accuracy，以及训练过程中模型可训练参数梯度分布
+  - `accelerate.log()`：无法添加histogram图，有局限性
 - 灵活的验证策略
-  - 由`valid_stategy`和`valid_steps`控制
-  - `valid_strategy = "epoch"` && `valid_steps = 1`表示每训练1个epoch验证一次
-  - `valid_strategy = "step"` && `valid_steps = 100`表示每训练100个step验证一次
+  - 由`valid_stategy`和`valid_interval`控制
+  - `valid_strategy = "epoch"` && `valid_interval = 1`表示每训练1个epoch验证一次
+  - `valid_strategy = "global_step"` && `valid_interval = 100`表示每训练100个global_step验证一次
+- early_stop策略
+  - 模型在`early_stop`个`epoch`后，如果验证集损失没有下降，则提前终止训练
+  - 建议在训练小模型的时候启用early_stop
+  - 注意：启用early_stop后不能使用断点续训，如果启用断点续训，则会重新初始化验证集最佳损失
 
-> 2. 打印日志的loss说明：（accuracy同理）
+
+## 2. 打印日志
 
 - 第1个epoch，第n个step的loss是前n个step的loss的平均
-
 - 第2个epoch，第n个step的loss是前n个step的loss的平均
 - 以此类推......
-- 此外，`Tensorboard`中表示loss和accuracy的折线图横坐标均为global_step
 
-> 3. 运行命令：
+## 3. 运行命令
 
 ```python
-cd scripts/
-accelerate launch --config_file="../configs/accelerate_config.yaml" main.py
+# 多卡运行
+cd Pytorch_Train_Demo/
+accelerate launch --config_file="./accelerate_config.yaml" main.py
+
+# 单卡运行
+cd Pytorch_Train_Demo/
+CUDA_VISIBLE_DEVICES=0 python main.py
 ```
 
-> 4. 运行环境：
-
-- 我使用`conda env export > my_env.yaml`导出了环境，你可以像这样导入环境：
+## 4. 运行环境
 
 ```bash
-conda env create -n YOUR_ENV_NAME -f my_env.yaml
+conda create -n <your_env_name> python==3.9
+conda activate <your_env_name>
+
+pip install torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 --index-url https://download.pytorch.org/whl/cu121
+pip install notebook ipywidgets accelerate evaluate scikit-learn peft
 ```
 
-> 5. Debug：`.vscode/launch.json`
+## 5. Debug
+
+`.vscode/launch.json`
 
 ```json
 {
@@ -55,15 +67,17 @@ conda env create -n YOUR_ENV_NAME -f my_env.yaml
             "request": "launch",
             "module": "accelerate.commands.launch",
             "args": [
-                "--config_file", "/data/home/wupengpeng/code/temp/Pytorch_Train_Demo/configs/accelerate_config.yaml",
-                "/data/home/wupengpeng/code/temp/Pytorch_Train_Demo/scripts/main.py",
-                "--config", "/data/home/wupengpeng/code/temp/Pytorch_Train_Demo/configs/config.toml",
+                "--config_file", "accelerate_config.yaml",
+                "main.py"
             ],
             "console": "integratedTerminal",
-            "justMyCode": false
+            "cwd": "/fs/home/wupengpeng/code/Pytorch_Train_Demo/",
+            "justMyCode": true
         }
     ]
 }
 ```
 
-🎉 待补充的功能：动态保存验证集上准确率最高的模型参数（如果是peft_model，则保存adaptor，否则保存整个模型的参数~）
+## 6. Contact
+
+- 如果代码中有任何问题，请与我联系：peg2_wu@163.com
