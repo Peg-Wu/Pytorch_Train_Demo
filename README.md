@@ -1,4 +1,4 @@
-# Pytorch_Train_Demo
+<img src="./logo/logo.png" alt="Pytorch_Train_Demo" style="zoom: 67%;" />
 
 ## 1. 基本功能
 
@@ -18,15 +18,17 @@
   - `valid_strategy = "global_step"` && `valid_interval = 100`表示每训练100个global_step验证一次
 - early_stop策略
   - 模型在`early_stop`个`epoch`后，如果验证集损失没有下降，则提前终止训练
+  - 启用early_stop策略时会动态保存验证集上损失最低的模型，保存目录为`./checkpoints/early_stop_best_model`
   - 建议在训练小模型的时候启用early_stop
   - 注意：启用early_stop后不能使用断点续训，如果启用断点续训，则会重新初始化验证集最佳损失
+- 保存训练结束模型：`./checkpoints/training_end_model`
 
 
 ## 2. 打印日志
 
 - 第1个epoch，第n个step的loss是前n个step的loss的平均
 - 第2个epoch，第n个step的loss是前n个step的loss的平均
-- 以此类推......
+- 以此类推...... (accuracy同理)
 
 ## 3. 运行命令
 
