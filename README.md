@@ -1,4 +1,4 @@
-<img src="./logo/logo.png" alt="Pytorch_Train_Demo" style="zoom: 50%;" />
+<img src="./logo/logo.png" alt="Pytorch_Train_Demo" style="zoom: 33%;" />
 
 ## 1. 基本功能
 
