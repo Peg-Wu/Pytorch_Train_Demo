@@ -1,4 +1,4 @@
-<img src="./logo/logo.png" alt="Pytorch_Train_Demo" style="zoom: 33%;" />
+<img src="./logo/logo.png" alt="Pytorch_Train_Demo" width="250" />
 
 ## 1. 基本功能
 
@@ -56,6 +56,8 @@ pip install notebook ipywidgets accelerate evaluate scikit-learn peft
 
 `.vscode/launch.json`
 
+- 多卡：
+
 ```json
 {
     // Use IntelliSense to learn about possible attributes.
@@ -64,7 +66,7 @@ pip install notebook ipywidgets accelerate evaluate scikit-learn peft
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: accelerate launch",
+            "name": "multi-proc-debugger",
             "type": "debugpy",
             "request": "launch",
             "module": "accelerate.commands.launch",
@@ -80,6 +82,30 @@ pip install notebook ipywidgets accelerate evaluate scikit-learn peft
 }
 ```
 
+- 单卡：
+
+```json
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "single-proc-debugger",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "args": [],
+            "env": {"CUDA_VIDIBLE_DEVICES": "0", "PATHONPATH": ""},
+            "cwd": "/fs/home/wupengpeng/code/Pytorch_Train_Demo/",
+            "justMyCode": true
+        }
+    ]
+}
+```
+
 ## 6. Contact
 
-- 如果代码中有任何问题，请与我联系：peg2_wu@163.com
+- 如果代码中有任何问题，请随时与我联系：peg2_wu@163.com
